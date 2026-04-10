@@ -288,42 +288,6 @@ class GuiRuntime:
         for row in view.get_children():
             view.delete(row)
 
-    def listbox_on_select(self, name: str, callback_label: str) -> None:
-        key = self._wkey(self.active_window, name)
-        if key not in self.listboxes:
-            raise RuntimeError(f"Unknown GUI listbox '{name}'")
-        widget = self.listboxes[key]
-
-        def on_select(_event: tk.Event[Any]) -> None:
-            self.interpreter.jump_to_label(callback_label)
-            self.interpreter.run_from_current(gui_callback=True)
-
-        widget.bind("<<ListboxSelect>>", on_select)
-
-    def listview_on_click(self, name: str, callback_label: str) -> None:
-        key = self._wkey(self.active_window, name)
-        if key not in self.listviews:
-            raise RuntimeError(f"Unknown GUI listview '{name}'")
-        view = self.listviews[key]
-
-        def on_click(_event: tk.Event[Any]) -> None:
-            self.interpreter.jump_to_label(callback_label)
-            self.interpreter.run_from_current(gui_callback=True)
-
-        view.bind("<ButtonRelease-1>", on_click)
-
-    def listview_on_doubleclick(self, name: str, callback_label: str) -> None:
-        key = self._wkey(self.active_window, name)
-        if key not in self.listviews:
-            raise RuntimeError(f"Unknown GUI listview '{name}'")
-        view = self.listviews[key]
-
-        def on_doubleclick(_event: tk.Event[Any]) -> None:
-            self.interpreter.jump_to_label(callback_label)
-            self.interpreter.run_from_current(gui_callback=True)
-
-        view.bind("<Double-1>", on_doubleclick)
-
     def listview_get_selected(self, name: str) -> list[str]:
         key = self._wkey(self.active_window, name)
         if key not in self.listviews:
@@ -545,9 +509,6 @@ class BasicInterpreter:
                 self.gui.listbox_delete(name, int(self._eval(index)))
             elif op == "GUI.LISTBOX.CLEAR":
                 self.gui.listbox_clear(raw.strip())
-            elif op == "GUI.LISTBOX.ONSELECT":
-                name, callback = self._split_csv(raw)
-                self.gui.listbox_on_select(name, callback)
             elif op == "GUI.LISTBOX.GET":
                 var, name = self._split_csv(raw)
                 self.env[var] = self.gui.listbox_get_selected(name)
@@ -576,12 +537,6 @@ class BasicInterpreter:
                 self.gui.listview_delete_row(name, int(self._eval(index)))
             elif op == "GUI.LISTVIEW.CLEAR":
                 self.gui.listview_clear(raw.strip())
-            elif op == "GUI.LISTVIEW.ONCLICK":
-                name, callback = self._split_csv(raw)
-                self.gui.listview_on_click(name, callback)
-            elif op == "GUI.LISTVIEW.ONDOUBLECLICK":
-                name, callback = self._split_csv(raw)
-                self.gui.listview_on_doubleclick(name, callback)
             elif op == "GUI.LISTVIEW.GET":
                 var, name = self._split_csv(raw)
                 self.env[var] = "|".join(self.gui.listview_get_selected(name))

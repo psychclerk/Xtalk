@@ -52,7 +52,6 @@ python3 basic256.py examples/hello.bas
 - `GUI.LISTBOX.SET name, index, valueExpr`
 - `GUI.LISTBOX.DELETE name, index`
 - `GUI.LISTBOX.CLEAR name`
-- `GUI.LISTBOX.ONSELECT listboxName, callbackLabel`
 - `GUI.LISTBOX.GET varName, listboxName`
 - `GUI.LISTVIEW name, "col1|col2|...", x, y, width, height`
 - `GUI.LISTVIEW.ADD name, "value1|value2|..."`
@@ -61,8 +60,6 @@ python3 basic256.py examples/hello.bas
 - `GUI.LISTVIEW.SETROW listviewName, index, "value1|value2|..."`
 - `GUI.LISTVIEW.DELETEROW listviewName, index`
 - `GUI.LISTVIEW.CLEAR listviewName`
-- `GUI.LISTVIEW.ONCLICK listviewName, callbackLabel`
-- `GUI.LISTVIEW.ONDOUBLECLICK listviewName, callbackLabel`
 - `GUI.LISTVIEW.GET varName, listviewName`
 - `GUI.SHOW [windowId]`
 
